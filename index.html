@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -212,7 +210,7 @@
             align-items: center;
         }
 
-        .download-area {
+        .admin-menu {
             position: fixed;
             bottom: 20px;
             right: 20px;
@@ -224,9 +222,53 @@
             text-align: center;
             z-index: 1000;
         }
+
+        /* モーダルウィンドウ用スタイル */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            width: 80%;
+            max-width: 600px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .code-output {
+            width: 100%;
+            height: 300px;
+            font-family: monospace;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background: #f9f9f9;
+            resize: vertical;
+            font-size: 0.9rem;
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
     
-        /* 管理用要素を非表示にする念のためのスタイル */
-        .admin-controls, .admin-controls-inline, .download-area { display: none !important; }
+        /* 管理用要素を非表示 */
+        .admin-controls, .admin-menu, .modal-overlay { display: none !important; }
     </style>
 </head>
 <body>
@@ -257,6 +299,12 @@ Tihokumi Sukuea Latatalas(ティホクミ-スクエア-ラタタラス)です。
                             <div class="link-content">
                                 <a href="https://t-sukuea-latatalas.github.io/T-Sukuea-Latatalas-talegas-zukan/" target="_blank">多例賀酢図鑑:Tab</a>
                                 <span>https://t-sukuea-latatalas.github.io/T-Sukuea-Latatalas-talegas-zukan/</span>
+                            </div>
+                        </li>
+                        <li class="link-item">
+                            <div class="link-content">
+                                <a href="https://t-sukuea-latatalas.github.io/T-Sukuea-Latatalas-latatala-zisio/" target="_blank">ラタタラ語の辞書</a>
+                                <span>https://t-sukuea-latatalas.github.io/T-Sukuea-Latatalas-latatala-zisio/</span>
                             </div>
                         </li>
             </ul>
