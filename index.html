@@ -1,378 +1,246 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="ja" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TSL's world</title>
+    <title>リンク集</title>
+    <!-- Tailwind CSS (CDN) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- PapaParse (CDN) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
     <style>
-        
-        /* 共通スタイル（公開サイトと管理画面共通） */
-        :root {
-            --bg-color: #fdfcf8; /* 薄橙よりの白 */
-            --accent-color: #7da182; /* くすんだ緑 */
-            --accent-dark: #5e7a63;
-            --text-color: #3e3e3e;
-            --border-color: #ddd;
-        }
-
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
-            margin: 0;
-            padding: 0;
-            line-height: 1.6;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        header {
-            text-align: center;
-            margin-bottom: 40px;
-            padding-top: 20px;
-        }
-
-        h1 {
-            font-size: 2rem;
-            color: var(--accent-dark);
-            margin-bottom: 10px;
-        }
-
-        h2 {
-            font-size: 1.2rem;
-            font-weight: normal;
-            color: #666;
-        }
-
-        /* タブデザイン */
-        .tabs {
-            display: flex;
-            justify-content: center;
-            border-bottom: 2px solid var(--accent-color);
-            margin-bottom: 30px;
-        }
-
-        .tab-button {
-            background: none;
-            border: none;
-            padding: 10px 20px;
-            font-size: 1.1rem;
-            cursor: pointer;
-            color: #888;
-            transition: color 0.3s, background 0.3s;
-            border-radius: 5px 5px 0 0;
-        }
-
-        .tab-button:hover {
-            background-color: rgba(125, 161, 130, 0.1);
-        }
-
-        .tab-button.active {
-            background-color: var(--accent-color);
-            color: white;
-        }
-
-        /* コンテンツエリア */
-        .tab-content {
+        /* ナビゲーションバーのスクロールバーを非表示にするスタイル */
+        #nav-container::-webkit-scrollbar {
             display: none;
-            animation: fadeIn 0.5s;
         }
-
-        .tab-content.active {
-            display: block;
+        #nav-container {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
         }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        /* 自己紹介セクション */
-        .intro-text {
-            white-space: pre-wrap;
-            padding: 20px;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        }
-
-        /* サイト一覧セクション */
-        .section-title {
-            border-left: 5px solid var(--accent-color);
-            padding-left: 10px;
-            margin-top: 40px;
-            margin-bottom: 20px;
-            font-size: 1.3rem;
-            color: var(--accent-dark);
-        }
-
-        .link-list {
-            list-style: none;
-            padding: 0;
-        }
-
-        .link-item {
-            background: white;
-            margin-bottom: 10px;
-            padding: 15px;
-            border-radius: 6px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: transform 0.2s;
-        }
-
-        .link-item:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-
-        .link-content a {
-            text-decoration: none;
-            color: var(--accent-dark);
-            font-weight: bold;
-            font-size: 1.1rem;
-            display: block;
-        }
-
-        .link-content span {
-            font-size: 0.85rem;
-            color: #888;
-        }
-
-        /* 管理画面専用スタイル */
-        .admin-controls {
-            background: #eee;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            border: 1px solid #ccc;
-        }
-
-        .admin-input-group {
-            margin-bottom: 10px;
-        }
-
-        .admin-input-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-
-        input[type="text"], input[type="url"], textarea, select {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-            font-family: inherit;
-        }
-
-        textarea {
-            min-height: 150px;
-        }
-
-        button.btn {
-            background-color: var(--accent-color);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 1rem;
-        }
-
-        button.btn:hover {
-            background-color: var(--accent-dark);
-        }
-
-        button.btn-danger {
-            background-color: #d9534f;
-            margin-left: 5px;
-            padding: 5px 10px;
-            font-size: 0.8rem;
-        }
-
-        button.btn-edit {
-            background-color: #f0ad4e;
-            margin-left: 5px;
-            padding: 5px 10px;
-            font-size: 0.8rem;
-        }
-        
-        .btn-group {
-            display: flex;
-            align-items: center;
-        }
-
-        .admin-menu {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: white;
-            padding: 15px;
-            border: 2px solid var(--accent-dark);
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-            text-align: center;
-            z-index: 1000;
-        }
-
-        /* モーダルウィンドウ用スタイル */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.6);
-            z-index: 2000;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        .modal-overlay.active {
-            display: flex;
-        }
-
-        .modal-content {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            width: 80%;
-            max-width: 600px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-        }
-
-        .code-output {
-            width: 100%;
-            height: 300px;
-            font-family: monospace;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            background: #f9f9f9;
-            resize: vertical;
-            font-size: 0.9rem;
-        }
-
-        .modal-actions {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 10px;
-        }
-    
-        /* 管理用要素を非表示 */
-        .admin-controls, .admin-menu, .modal-overlay { display: none !important; }
     </style>
 </head>
-<body>
-    <div class="container">
-        <header>
-            <h1>TSL's world</h1>
-            <h2>Tihokmi Sukuea Ltatalasの世界へようこそ</h2>
-        </header>
+<body class="bg-gray-50 text-gray-800 min-h-screen flex flex-col font-sans">
 
-        <div class="tabs">
-            <button class="tab-button active" onclick="switchTab('intro')">自己紹介</button>
-            <button class="tab-button" onclick="switchTab('sites')">サイト一覧</button>
+    <!-- ヘッダーエリア（追従型ナビゲーション） -->
+    <header class="bg-white border-b border-gray-200 sticky top-0 z-10 shadow-sm">
+        <div class="max-w-6xl mx-auto px-4 py-4">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <h1 id="site-title" class="text-xl font-bold text-gray-900 tracking-tight">マイリンク集</h1>
+                <!-- 自動生成されるナビゲーションボタンのコンテナ -->
+                <nav id="nav-container" class="flex gap-2 overflow-x-auto py-1">
+                    <!-- JavaScriptでボタンが動的に挿入されます -->
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- メインコンテンツ -->
+    <main class="flex-grow max-w-6xl w-full mx-auto px-4 py-8">
+        
+        <!-- ローディング表示 -->
+        <div id="loading" class="flex flex-col items-center justify-center py-20">
+            <div class="animate-spin h-8 w-8 border-4 border-indigo-500 border-t-transparent rounded-full mb-4"></div>
+            <p class="text-gray-500 text-sm">データを読み込んでいます...</p>
         </div>
 
-        <div id="tab-intro" class="tab-content active">
-            <div class="intro-text">TSL's worldへようこそ
-Tihokumi Sukuea Latatalas(ティホクミ-スクエア-ラタタラス)です。言語や架空生物など、世界そのものを創作しています。
-現在つくっている世界は「保弧留宇」保弧留宇についてのWebサイトも現在制作中です。
-
-私の作品に関するWebサイト(このサイトも含む)のコードはAIに書かせています</div>
+        <!-- エラーメッセージ（またはURL未設定時の案内） -->
+        <div id="error-message" class="hidden max-w-xl mx-auto bg-yellow-50 border border-yellow-200 text-yellow-800 rounded-lg p-6 my-8">
+            <h3 class="font-bold text-lg mb-2">設定が必要です</h3>
+            <p id="error-text" class="text-sm leading-relaxed mb-4"></p>
+            <div class="text-xs text-gray-600 bg-white p-3 rounded border border-yellow-100">
+                <strong>CSVデータの確認用ダミーフォーマット:</strong><br>
+                1行目: リスト名, URL, 説明<br>
+                2行目: SNS, https://twitter.com, 公式X（旧Twitter）アカウント
+            </div>
         </div>
 
-        <div id="tab-sites" class="tab-content">
-            <div class="section-title">作品やサイト</div>
-            <ul class="link-list">
-                
-                        <li class="link-item">
-                            <div class="link-content">
-                                <a href="https://t-sukuea-latatalas.github.io/talegas-zukan/" target="_blank">多例賀酢図鑑:Tab</a>
-                                <span>https://t-sukuea-latatalas.github.io/talegas-zukan/</span>
-                            </div>
-                        </li>
-                        <li class="link-item">
-                            <div class="link-content">
-                                <a href="https://t-sukuea-latatalas.github.io/latatalot-zisio/" target="_blank">ラタタラ語の辞書</a>
-                                <span>https://t-sukuea-latatalas.github.io/latatalot-zisio/</span>
-                            </div>
-                        </li>
-                        <li class="link-item">
-                            <div class="link-content">
-                                <a href="https://t-sukuea-latatalas.github.io/latatala-kaisetu/" target="_blank">ラタタラ語の解説</a>
-                                <span>https://t-sukuea-latatalas.github.io/latatala-kaisetu/</span>
-                            </div>
-                        </li>
-                        <li class="link-item">
-                            <div class="link-content">
-                                <a href="https://t-sukuea-latatalas.github.io/latamozi-seisei/" target="_blank">ラタタラ文字画像ジェネレータ</a>
-                                <span>https://t-sukuea-latatalas.github.io/latamozi-seisei/</span>
-                            </div>
-                        </li>
-                        <li class="link-item">
-                            <div class="link-content">
-                                <a href="https://t-sukuea-latatalas.github.io/fetesis-tankan-kop-latatal/" target="_blank">保弧留宇が呼んでいる</a>
-                                <span>https://t-sukuea-latatalas.github.io/fetesis-tankan-kop-latatal/</span>
-                            </div>
-                        </li>
-                        <li class="link-item">
-                            <div class="link-content">
-                                <a href="https://t-sukuea-latatalas.github.io/lttl-bois/" target="_blank">保弧留宇鉄道運行状況</a>
-                                <span>https://t-sukuea-latatalas.github.io/lttl-bois/</span>
-                            </div>
-                        </li>
-                        <li class="link-item">
-                            <div class="link-content">
-                                <a href="https://forms.gle/ZPonFxbWJj79USMd6" target="_blank">人工言語造語依頼</a>
-                                <span>https://forms.gle/ZPonFxbWJj79USMd6</span>
-                            </div>
-                        </li>
-            </ul>
-
-            <div class="section-title">SNS</div>
-            <ul class="link-list">
-                
-                        <li class="link-item">
-                            <div class="link-content">
-                                <a href="https://x.com/tnkb_bargar" target="_blank">X</a>
-                                <span>https://x.com/tnkb_bargar</span>
-                            </div>
-                        </li>
-                        <li class="link-item">
-                            <div class="link-content">
-                                <a href="https://scratch.mit.edu/users/Sukuea-Latatalas/" target="_blank">Scratch</a>
-                                <span>https://scratch.mit.edu/users/Sukuea-Latatalas/</span>
-                            </div>
-                        </li>
-                        <li class="link-item">
-                            <div class="link-content">
-                                <a href="https://scratch.mit.edu/users/Sukuea-0904/" target="_blank">Scratchサブ垢</a>
-                                <span>https://scratch.mit.edu/users/Sukuea-0904/</span>
-                            </div>
-                        </li>
-            </ul>
+        <!-- リンク集の描画エリア -->
+        <div id="content-container" class="space-y-12">
+            <!-- JavaScriptでカテゴリごとのセクションとカードが動的に挿入されます -->
         </div>
-    </div>
+
+    </main>
+
+    <!-- フッター -->
+    <footer class="bg-white border-t border-gray-200 py-6 mt-12">
+        <div class="max-w-6xl mx-auto px-4 text-center text-xs text-gray-400">
+            &copy; <span id="current-year"></span> Link Portal. Powered by Google Sheets & GitHub Pages.
+        </div>
+    </footer>
 
     <script>
-        function switchTab(tabName) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.tab-button').forEach(el => el.classList.remove('active'));
-            
-            document.getElementById('tab-' + tabName).classList.add('active');
-            const btnIndex = tabName === 'intro' ? 0 : 1;
-            document.querySelectorAll('.tab-button')[btnIndex].classList.add('active');
-        }
+        // ==========================================
+        // ⚠️ GoogleスプレッドシートのCSV URLを設定してください
+        // ==========================================
+        const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRLQdZxjIRCoE5H2a_Dpi9Xwf-tPO3CGJoth3bY7pBU-HYwPkd2PeBYCULgXvWnC0W2ZN4lXeT7xdRX/pub?gid=0&single=true&output=csv';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('current-year').textContent = new Date().getFullYear();
+
+            const navContainer = document.getElementById('nav-container');
+            const contentContainer = document.getElementById('content-container');
+            const loadingEl = document.getElementById('loading');
+            const errorEl = document.getElementById('error-message');
+            const errorTextEl = document.getElementById('error-text');
+
+            // プレースホルダーのまま、または未設定の場合の処理
+            if (CSV_URL === 'YOUR_CSV_URL_HERE' || !CSV_URL.trim()) {
+                showError('CSVの取得先URLが設定されていません。コード（index.html）内の <code>const CSV_URL = \'YOUR_CSV_URL_HERE\';</code> を取得したURLに書き換えてください。');
+                return;
+            }
+
+            // CSVデータの取得
+            fetch(CSV_URL)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('CSVファイルの読み込みに失敗しました。URLが正しいか、公開設定が完了しているかご確認ください。');
+                    }
+                    return response.text();
+                })
+                .then(csvText => {
+                    // PapaParseによる解析
+                    Papa.parse(csvText, {
+                        skipEmptyLines: true,
+                        complete: function(results) {
+                            renderData(results.data);
+                        },
+                        error: function(error) {
+                            showError('データの解析（パース）に失敗しました: ' + error.message);
+                        }
+                    });
+                })
+                .catch(err => {
+                    showError(err.message);
+                });
+
+            // エラー表示用関数
+            function showError(message) {
+                loadingEl.classList.add('hidden');
+                errorTextEl.innerHTML = message;
+                errorEl.classList.remove('hidden');
+            }
+
+            // 特殊文字のサニタイズ（XSS対策）
+            function escapeHtml(str) {
+                if (!str) return '';
+                return str.replace(/[&<>'"]/g, 
+                    tag => ({
+                        '&': '&amp;',
+                        '<': '&lt;',
+                        '>': '&gt;',
+                        "'": '&#39;',
+                        '"': '&quot;'
+                    }[tag] || tag)
+                );
+            }
+
+            // データの描画処理
+            function renderData(data) {
+                // ヘッダー行を除去
+                if (data.length <= 1) {
+                    showError('スプレッドシートにデータが見つかりません。行が追加されているかご確認ください。');
+                    return;
+                }
+
+                const rows = data.slice(1);
+                const groups = {};
+
+                // データを「リスト名（カテゴリ）」ごとにグループ化
+                rows.forEach(row => {
+                    const category = row[0]?.trim();
+                    const url = row[1]?.trim();
+                    const description = row[2]?.trim() || '';
+
+                    if (!category || !url) return; // カテゴリまたはURLがない行は除外
+
+                    if (!groups[category]) {
+                        groups[category] = [];
+                    }
+                    groups[category].push({ url, description });
+                });
+
+                const categories = Object.keys(groups);
+                if (categories.length === 0) {
+                    showError('表示可能な有効なリンクデータがありません。スプレッドシートの「リスト名」と「URL」を入力してください。');
+                    return;
+                }
+
+                // ローディングを非表示にする
+                loadingEl.classList.add('hidden');
+
+                // 1. ナビゲーション（アンカーリンク）の生成
+                categories.forEach(category => {
+                    const btn = document.createElement('a');
+                    btn.href = `#${encodeURIComponent(category)}`;
+                    btn.textContent = category;
+                    btn.className = "px-3 py-1.5 bg-gray-100 text-gray-600 hover:bg-indigo-50 hover:text-indigo-600 rounded-full text-xs font-medium transition whitespace-nowrap border border-transparent hover:border-indigo-200";
+                    navContainer.appendChild(btn);
+                });
+
+                // 2. セクションとカードの生成
+                categories.forEach(category => {
+                    const section = document.createElement('section');
+                    section.id = category;
+                    // ヘッダーが固定表示（sticky）されるため、その高さ分スクロール位置を調整
+                    section.className = "scroll-mt-28"; 
+
+                    // カテゴリ見出し
+                    const heading = document.createElement('h2');
+                    heading.className = "text-lg font-bold text-gray-900 border-b-2 border-indigo-500 pb-2 mb-4 flex items-center";
+                    heading.innerHTML = `
+                        <span class="w-2.5 h-2.5 bg-indigo-500 rounded-full mr-2"></span>
+                        ${escapeHtml(category)}
+                    `;
+                    section.appendChild(heading);
+
+                    // カードを格納するグリッド
+                    const grid = document.createElement('div');
+                    grid.className = "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4";
+
+                    groups[category].forEach(item => {
+                        const card = document.createElement('a');
+                        card.href = item.url;
+                        card.target = "_blank";
+                        card.rel = "noopener noreferrer";
+                        card.className = "group block p-5 bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md hover:border-indigo-300 transition duration-200 flex flex-col justify-between";
+
+                        // ドメインの簡易抽出（見栄え用）
+                        let displayHost = '';
+                        try {
+                            displayHost = new URL(item.url).hostname;
+                        } catch(e) {
+                            displayHost = 'リンク先へ移動';
+                        }
+
+                        card.innerHTML = `
+                            <div>
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="text-[10px] font-bold tracking-wider text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded uppercase">
+                                        LINK
+                                    </span>
+                                    <svg class="w-4 h-4 text-gray-300 group-hover:text-indigo-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                                    </svg>
+                                </div>
+                                <h3 class="text-base font-semibold text-gray-900 group-hover:text-indigo-600 transition-colors break-all line-clamp-1 mb-1">
+                                    ${displayHost}
+                                </h3>
+                                <p class="text-xs text-gray-500 line-clamp-2 leading-relaxed mb-4">
+                                    ${escapeHtml(item.description || '説明はありません。')}
+                                </p>
+                            </div>
+                            <div class="text-[10px] text-gray-400 break-all pt-2 border-t border-gray-100">
+                                ${escapeHtml(item.url)}
+                            </div>
+                        `;
+                        grid.appendChild(card);
+                    });
+
+                    section.appendChild(grid);
+                    contentContainer.appendChild(section);
+                });
+            }
+        });
     </script>
 </body>
 </html>
